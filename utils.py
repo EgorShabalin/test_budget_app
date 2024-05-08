@@ -1,4 +1,5 @@
-def read_file():  # Чтение файла money.txt
+# Чтение файла money.txt
+def read_file():
     file = "money.txt"
     with open(file, "r") as f:
         data = f.read()
@@ -6,7 +7,8 @@ def read_file():  # Чтение файла money.txt
     return data
 
 
-def get_data():  #
+# Представление содержимого файла money.txt в виде списка словарей
+def get_data():
     result = []
     data = read_file()
     data = data.splitlines()

@@ -1,7 +1,8 @@
-from utils import get_data, read_file
+from utils import get_data
 from model import Budget_item
 
 
+# Собрать список всех объектов
 def get_all_objects():
     items_list = []
     dict_list = get_data()
@@ -19,6 +20,7 @@ def get_all_objects():
         return None
 
 
+# Получить объект по его id
 def get_object(id):
     dict_list = get_data()
     for item in dict_list:
@@ -34,6 +36,7 @@ def get_object(id):
             pass
 
 
+# Поиск по аттрибутам объекта
 def find(request):
     result = set()
     request = str(request)
@@ -52,6 +55,7 @@ def find(request):
     return result
 
 
+# Назначить индекс для сохранения записи. Находит самое больщое число и прибавляет 1.
 def get_index():
     index = 0
     objects = get_all_objects()
@@ -67,6 +71,7 @@ def get_index():
         return "1"
 
 
+# Сохраняет запись в файл из объекта
 def save(obj):
     file = "money.txt"
     with open(file, "a") as f:
@@ -81,6 +86,7 @@ ID: {obj.id}
         )
 
 
+# Принимает отредактированный объект, находит соответствие из имеющихся объектов по id, сохраняет изменения.
 def edit(obj):
     objects = get_all_objects()
     for o in objects:
@@ -105,6 +111,7 @@ ID: {ob.id}
             )
 
 
+# Создает список всех объектов, удаляет из него переданный в аттрибуте объект, сохраняет изменения.
 def delete(obj):
     all_obj = get_all_objects()
     if obj in all_obj:

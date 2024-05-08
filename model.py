@@ -1,3 +1,4 @@
+# Модель объекта для создания каждой записи
 class Budget_item:
     def __init__(self, id, date, cat, amount, desc):
         self.id = id

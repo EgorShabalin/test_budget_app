@@ -1,16 +1,19 @@
-import argparse
+import argparse  # argparse парсер для обработки аргументов
 
-from datetime import datetime
+from datetime import datetime  # библиотека для обработки даты и времени
 
+# импорт функций и модели объекта
 from db import get_all_objects, get_index, save, get_object, edit, find
 from model import Budget_item
 
 
+# инициализация argparse парсера
 parser = argparse.ArgumentParser(
     prog="BUDGET MANAGER",
     description="Управляй своим бюджетом! Принимаются только целые числа!",
 )
 
+# Обработка аргументов
 parser.add_argument(
     "-balance",
     dest="balance",
@@ -60,9 +63,11 @@ parser.add_argument(
     help="Поиск по всем Записям",
 )
 
+# Передача аргументов в парсер
 args = parser.parse_args()
 
 
+# Функция подсчета баланса, возвращает только число
 def get_balance():
     pos = []
     neg = []
@@ -79,21 +84,25 @@ def get_balance():
     return result
 
 
+# Возвращает строку с Балансом
 def str_balance():
     bal = get_balance()
     print(f"Ваш баланс: {bal[2]}")
 
 
+# Возвращает строку с общим Доходом
 def get_income():
     bal = get_balance()
     print(f"Ваш ощий Доход: {bal[0]}")
 
 
+# Возвращает строку с общим Расходом
 def get_expenses():
     bal = get_balance()
     print(f"Ваш ощий Расход: {bal[1]}")
 
 
+# Ввод и сохранение записи о пополнение баланса
 def deposit():
     amount = input("Сумма дохода: ")
     desc = input("Описание: ")
@@ -106,6 +115,7 @@ def deposit():
     str_balance()
 
 
+# Ввод и сохранение записи о расходе
 def withdraw():
     amount = input("Сумма расхода: ")
     bal = get_balance()
@@ -122,6 +132,7 @@ def withdraw():
         str_balance()
 
 
+# Показать все записи
 def show_all():
     objects = get_all_objects()
     for obj in objects:
@@ -136,6 +147,7 @@ ID: {obj.id}
         )
 
 
+# Редактирование записи по указанному id
 def edit_item():
     show_all()
     item_id = input("Укажите ID записи для редактирования: ")
@@ -182,6 +194,7 @@ ID: {obj.id}
     print("Данные Обновлены!")
 
 
+# Поиск по аттрибутам сохраненных объектов
 def search():
     text = input("Введите информацию для поиска: ")
     result = find(text)
@@ -200,6 +213,7 @@ def search():
         print("По введенному запросу Записей не найдено...")
 
 
+# Обработка введенных аттрибутов
 if args.balance:
     str_balance()
 elif args.income:
