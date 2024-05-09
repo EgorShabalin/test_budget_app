@@ -39,7 +39,7 @@ def get_object(id):
 # Поиск по аттрибутам объекта
 def find(request):
     result = set()
-    request = str(request)
+    request = str(request).lower()
     objects = get_all_objects()
     for obj in objects:
         if request in str(obj.id):
