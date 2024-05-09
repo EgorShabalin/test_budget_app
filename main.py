@@ -62,6 +62,19 @@ parser.add_argument(
     action="store_true",
     help="Поиск по всем Записям",
 )
+parser.add_argument(
+    "-dep",
+    nargs=2,
+    metavar=("amount", "description"),
+    help="Add an amount with description",
+)
+parser.add_argument(
+    "-wtd",
+    nargs=2,
+    metavar=("amount", "description"),
+    help="Add an amount with description",
+)
+
 
 # Передача аргументов в парсер
 args = parser.parse_args()
@@ -115,6 +128,16 @@ def deposit():
     str_balance()
 
 
+def deposit_amount(amount, desc):
+    id = get_index()
+    date = datetime.now()
+    cat = "Доход"
+    obj = Budget_item(id, date, cat, amount, desc)
+    save(obj)
+    print(f"Ваш баланс пополнен на сумму {amount}.")
+    str_balance()
+
+
 # Ввод и сохранение записи о расходе
 def withdraw():
     amount = input("Сумма расхода: ")
@@ -123,6 +146,20 @@ def withdraw():
         print("Недостаточно средств!")
     else:
         desc = input("Описание: ")
+        id = get_index()
+        date = datetime.now()
+        cat = "Расход"
+        obj = Budget_item(id, date, cat, amount, desc)
+        save(obj)
+        print(f"Израсходована сумма {amount}.")
+        str_balance()
+
+
+def withdraw_amount(amount, desc):
+    bal = get_balance()
+    if int(amount) > bal[2]:
+        print("Недостаточно средств!")
+    else:
         id = get_index()
         date = datetime.now()
         cat = "Расход"
@@ -230,5 +267,9 @@ elif args.edit_item:
     edit_item()
 elif args.search:
     search()
+elif args.dep:
+    deposit_amount(args.dep[0], args.dep[1])
+elif args.wtd:
+    withdraw_amount(args.wtd[0], args.wtd[1])
 else:
     print("Введите -h для получения справки.")
