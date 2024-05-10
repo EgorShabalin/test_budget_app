@@ -26,20 +26,25 @@ git pull https://github.com/EgorShabalin/test_budget_app.git
 ```
 $ python3 main.py -h
 
-usage: BUDGET MANAGER [-h] [-balance] [-income] [-expenses] [-add] [-sub] [-show] [-edit] [-search]
+usage: BUDGET MANAGER [-h] [-balance] [-income] [-expenses] [-add] [-sub] [-show] [-edit] [-search] [-dep amount description]
+                      [-wtd amount description]
 
 Управляй своим бюджетом! Принимаются только целые числа!
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -balance    Узнать текущий Баланс
-  -income     Узнать весю сумму Дохода
-  -expenses   Узнать всю сумму Расходов
-  -add        Пополнить Баланс
-  -sub        Израсходовать Сумму
-  -show       Показать все Записи
-  -edit       Редактировать Запись
-  -search     Поиск по всем Записям
+  -h, --help            show this help message and exit
+  -balance              Узнать текущий Баланс
+  -income               Узнать весю сумму Дохода
+  -expenses             Узнать всю сумму Расходов
+  -add                  Пополнить Баланс
+  -sub                  Израсходовать Сумму
+  -show                 Показать все Записи
+  -edit                 Редактировать Запись
+  -search               Поиск по всем Записям
+  -dep amount description
+                        Принимает 2 аргумента для записи Дохода: Сумма, Описание
+  -wtd amount description
+                        Принимает 2 аргумента для записи Расхода: Сумма, Описание
 ```
 
 #### Для отображения доступного баланса:
