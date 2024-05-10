@@ -112,13 +112,14 @@ ID: {ob.id}
 
 
 # Создает список всех объектов, удаляет из него переданный в аттрибуте объект, сохраняет изменения.
-def delete(obj):
+def delete(id):
     all_obj = get_all_objects()
-    if obj in all_obj:
-        all_obj.remove(obj)
+    for obj in all_obj:
+        if str(obj.id) == id:
+            all_obj.remove(obj)
     file = "money.txt"
-    for o in all_obj:
-        with open(file, "w") as f:
+    with open(file, "w") as f:
+        for o in all_obj:
             f.write(
                 f"""
 ID: {o.id}
@@ -128,3 +129,4 @@ ID: {o.id}
 Описание: {o.desc}
 """
             )
+    return True

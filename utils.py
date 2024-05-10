@@ -17,7 +17,7 @@ def get_data():
         dict = {}
         for i in item:
             k, v = i.split(": ")
-            dict[k] = v
+            dict[k] = v.rstrip()
             if not dict in result:
                 result.append(dict)
     # print(result)

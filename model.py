@@ -8,7 +8,7 @@ class Budget_item:
         self.desc = desc
 
     def __str__(self):
-        return self.id
+        return "OBJ" + self.id
 
     def __repr__(self):
-        return self.id
+        return "OBJ" + self.id
