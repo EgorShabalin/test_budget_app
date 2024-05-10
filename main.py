@@ -66,13 +66,13 @@ parser.add_argument(
     "-dep",
     nargs=2,
     metavar=("amount", "description"),
-    help="Add an amount with description",
+    help="Принимает 2 аргумента для записи Дохода: Сумма, Описание",
 )
 parser.add_argument(
     "-wtd",
     nargs=2,
     metavar=("amount", "description"),
-    help="Add an amount with description",
+    help="Принимает 2 аргумента для записи Расхода: Сумма, Описание",
 )
 
 
