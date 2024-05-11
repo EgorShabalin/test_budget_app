@@ -3,7 +3,7 @@ import argparse  # argparse парсер для обработки аргуме�
 from datetime import datetime  # библиотека для обработки даты и времени
 
 # импорт функций и модели объекта
-from db import get_all_objects, get_index, save, get_object, edit, find
+from db import get_all_objects, get_index, save, get_object, edit, find, delete
 from model import Budget_item
 
 
@@ -74,7 +74,12 @@ parser.add_argument(
     metavar=("amount", "description"),
     help="Принимает 2 аргумента для записи Расхода: Сумма, Описание",
 )
-
+parser.add_argument(
+    "-delete",
+    nargs=1,
+    metavar=("id"),
+    help="Принимает 1 аргумент для Удаления записи: Номер Записи",
+)
 
 # Передача аргументов в парсер
 args = parser.parse_args()
@@ -250,6 +255,27 @@ def search():
         print("По введенному запросу Записей не найдено...")
 
 
+# Удаление записи по номеру записи
+def delete_item(id):
+    obj = get_object(id)
+    print(
+        f"""Удалить запись?
+
+ID: {obj.id}
+Дата: {obj.date}
+Категория: {obj.cat}
+Сумма: {obj.amount}
+Описание: {obj.desc}
+"""
+    )
+    answer = input('Введите "Да" или "Нет": ')
+    if answer == "Да":
+        delete(id)
+        print(f"Запись номер {id} была Удалена!")
+    else:
+        print(f"Удаление записи номер {id} Отменено!")
+
+
 # Обработка введенных аттрибутов
 if args.balance:
     str_balance()
@@ -271,5 +297,7 @@ elif args.dep:
     deposit_amount(args.dep[0], args.dep[1])
 elif args.wtd:
     withdraw_amount(args.wtd[0], args.wtd[1])
+elif args.delete:
+    delete_item(args.delete[0])
 else:
     print("Введите -h для получения справки.")

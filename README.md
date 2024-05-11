@@ -27,7 +27,7 @@ git pull https://github.com/EgorShabalin/test_budget_app.git
 $ python3 main.py -h
 
 usage: BUDGET MANAGER [-h] [-balance] [-income] [-expenses] [-add] [-sub] [-show] [-edit] [-search] [-dep amount description]
-                      [-wtd amount description]
+                      [-wtd amount description] [-delete id]
 
 Управляй своим бюджетом! Принимаются только целые числа!
 
@@ -45,6 +45,7 @@ optional arguments:
                         Принимает 2 аргумента для записи Дохода: Сумма, Описание
   -wtd amount description
                         Принимает 2 аргумента для записи Расхода: Сумма, Описание
+  -delete id            Принимает 1 аргумент для Удаления записи: Номер Записи
 ```
 
 #### Для отображения доступного баланса:
@@ -185,6 +186,23 @@ ID: 4
 Описание: Hotdog            
 ================================
 ```
+#### Для удаления записи по ее номеру:
+
+```
+$ python3 main.py -delete 8
+
+Удалить запись?
+
+ID: 8
+Дата: 2024-05-09 11:10:56.306038
+Категория: Расход
+Сумма: 100
+Описание: Cellphone pay
+
+Введите "Да" или "Нет": Да
+Запись номер 8 была Удалена!
+```
+
 #### Для остановки приложения в любой момент нажмите сочетание клавиш:
 
 ```
