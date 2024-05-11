@@ -171,10 +171,17 @@ ID: 1000
         )
 
     def test_delete(self):
-        data = read_file()
-        delete("1001")
-        result = read_file()
-        self.assertEqual(data, result)
+        mock_obj = Budget_item(
+            id="99999",
+            date="2024-05-08 15:48:31.543158",
+            cat="Доход",
+            amount="1000",
+            desc="Зарплата",
+        )
+        save(mock_obj)
+        self.assertTrue(get_object("99999"))
+        delete("99999")
+        self.assertFalse(get_object("99999"))
 
     @patch("main.get_all_objects")
     def test_get_balance(self, mock_get_all_objects):
