@@ -270,6 +270,55 @@ ID: 1000
 
         self.assertEqual(output, expected_result.strip())
 
+    @patch("builtins.input", side_effect=["444444", "4", "Успешно Редактирование-ТЕСТ"])
+    def test_edit_item(self, mock_input):
+        mock_obj = Budget_item(
+            id="444444",
+            date="2024-05-08 15:48:31.543158",
+            cat="Доход",
+            amount="1000",
+            desc="Редактирование-ТЕСТ",
+        )
+        save(mock_obj)
+        self.assertTrue(get_object("444444"))
+        with patch("sys.stdout", new=StringIO()) as fake_stdout:
+            edit_item()
+            self.assertTrue("Успешно" in get_object("444444").desc)
+            output = fake_stdout.getvalue().strip()
+            self.assertTrue("Данные Обновлены!" in output)
+
+    @patch("builtins.input", side_effect=["121212"])
+    def test_search(self, mock_input):
+        mock_obj = Budget_item(
+            id="121212",
+            date="2024-05-08 15:48:31.543158",
+            cat="Доход",
+            amount="1000",
+            desc="Поиск-ТЕСТ",
+        )
+        save(mock_obj)
+        with patch("sys.stdout", new=StringIO()) as fake_stdout:
+            search("Поиск")
+            self.assertTrue("Поиск" in get_object("121212").desc)
+            output = fake_stdout.getvalue().strip()
+            self.assertTrue("121212" in output)
+
+    @patch("builtins.input", side_effect=["Да"])
+    def test_delete_item(self, mock_input):
+        mock_obj = Budget_item(
+            id="151515",
+            date="2024-05-08 15:48:31.543158",
+            cat="Доход",
+            amount="1000",
+            desc="Зарплата",
+        )
+        save(mock_obj)
+        with patch("sys.stdout", new=StringIO()) as fake_stdout:
+            delete_item("151515")
+            output = fake_stdout.getvalue().strip()
+            self.assertTrue("Удалена" in output and "151515" in output)
+            self.assertFalse(get_object("151515"))
+
 
 if __name__ == "__main__":
     unittest.main()
