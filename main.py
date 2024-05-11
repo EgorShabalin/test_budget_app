@@ -58,8 +58,8 @@ parser.add_argument(
 )
 parser.add_argument(
     "-search",
-    dest="search",
-    action="store_true",
+    nargs=1,
+    metavar=("text"),
     help="Поиск по всем Записям",
 )
 parser.add_argument(
@@ -184,8 +184,7 @@ ID: {obj.id}
 Дата: {obj.date}
 Категория: {obj.cat}
 Сумма: {obj.amount}
-Описание: {obj.desc}
-"""
+Описание: {obj.desc}"""
         )
 
 
@@ -237,8 +236,7 @@ ID: {obj.id}
 
 
 # Поиск по аттрибутам сохраненных объектов
-def search():
-    text = input("Введите информацию для поиска: ")
+def search(text):
     result = find(text)
     if result:
         print("\nНайдены Записи:")
@@ -292,7 +290,7 @@ elif args.show_all:
 elif args.edit_item:
     edit_item()
 elif args.search:
-    search()
+    search(args.search[0])
 elif args.dep:
     deposit_amount(args.dep[0], args.dep[1])
 elif args.wtd:

@@ -1,6 +1,8 @@
 import unittest
-from time import sleep
-from unittest import mock
+import os
+from datetime import datetime
+from unittest.mock import patch
+from io import StringIO
 from utils import *
 from db import *
 from main import *
@@ -81,7 +83,7 @@ ID: 1000
         self.assertEqual(data.date, item_1.date)
 
     def test_find(self):
-        data = find("-ТЕСТ")
+        data = find("Зарплата-ТЕСТ")
         data = data.pop()
         result = {
             Budget_item(
@@ -108,7 +110,7 @@ ID: 1000
 
     def test_save(self):
         obj = Budget_item(
-            id="1001",
+            id="10011",
             date="2024-05-08 15:48:31.543158",
             cat="cat-TEST",
             amount="am-TEST",
@@ -173,6 +175,93 @@ ID: 1000
         delete("1001")
         result = read_file()
         self.assertEqual(data, result)
+
+    @patch("main.get_all_objects")
+    def test_get_balance(self, mock_get_all_objects):
+        mock_get_all_objects.return_value = [
+            Budget_item(
+                id="1000",
+                date="2024-05-08 15:48:31.543158",
+                cat="Доход",
+                amount="1000",
+                desc="Зарплата",
+            ),
+            Budget_item(
+                id="1001",
+                date="2024-05-08 15:48:31.543158",
+                cat="Доход",
+                amount="100",
+                desc="Кешбек",
+            ),
+            Budget_item(
+                id="1002",
+                date="2024-05-08 15:48:31.543158",
+                cat="Расход",
+                amount="600",
+                desc="Налог",
+            ),
+        ]
+        result = get_balance()
+        self.assertEqual(result, [1100, 600, 500])
+
+    @patch("builtins.input", side_effect=["1000", "Пополнение-ТЕСТ"])
+    def test_deposit(self, mock_input):
+        deposit()
+        self.assertEqual(
+            find("Пополнение-ТЕСТ").pop().desc.rstrip(),
+            Budget_item(
+                id="0",
+                date=datetime(2024, 5, 8, 15, 48, 31, 543158),
+                cat="Доход",
+                amount="1000",
+                desc="Пополнение-ТЕСТ",
+            ).desc,
+        )
+
+    def test_deposit_amount(self):
+        amount = "222"
+        description = "deposit_amount_test"
+        deposit_amount(amount, description)
+        with patch("sys.stdout", new=StringIO()) as fake_stdout:
+            str_balance()
+            result = find("deposit_amount_test").pop().desc.rstrip()
+            output = fake_stdout.getvalue().strip()
+            self.assertTrue("222" in output)
+        self.assertEqual("deposit_amount_test", result.strip())
+
+    @patch("builtins.input", side_effect=["1111", "Расход-ТЕСТ"])
+    def test_withdraw(self, mock_input):
+        withdraw()
+        self.assertEqual(
+            find("Расход-ТЕСТ").pop().amount.rstrip(),
+            Budget_item(
+                id="1111",
+                date=datetime(2024, 5, 8, 15, 48, 31, 543158),
+                cat="Расход",
+                amount="1111",
+                desc="Расход-ТЕСТ",
+            ).amount,
+        )
+
+    def test_withdraw_amount(self):
+        amount = "333"
+        description = "withdraw_amount_test"
+        withdraw_amount(amount, description)
+        with patch("sys.stdout", new=StringIO()) as fake_stdout:
+            str_balance()
+            result = find("withdraw_amount_test").pop().desc.rstrip()
+            output = fake_stdout.getvalue().strip()
+            self.assertTrue("68667" in output)
+        self.assertEqual("withdraw_amount_test", result.strip())
+
+    def test_show_all(self):
+        expected_result = read_file()
+        with patch("sys.stdout", new=StringIO()) as fake_stdout:
+            show_all()
+            output = fake_stdout.getvalue().strip()
+            self.assertTrue(output in expected_result)
+
+        self.assertEqual(output, expected_result.strip())
 
 
 if __name__ == "__main__":
